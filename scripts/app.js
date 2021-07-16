@@ -27,33 +27,56 @@ function createGrid(startingPosition) {
     grid.appendChild(cell)
     cells.push(cell)
   }
+  cells[11].classList.add('wall')
+  cells[12].classList.add('wall')
+  cells[21].classList.add('wall')
+  cells[17].classList.add('wall')
+  cells[18].classList.add('wall')
+  cells[28].classList.add('wall')
   addGodzilla(startingPosition)
 }
 
+function wallCheck(position) {
+  return !cells[position].classList.contains('wall')
+}
+
 function handleKeyUp(event) {
-  removeGodzilla(godzillaPosition) // * remove pikachu from the current position
+  removeGodzilla(godzillaPosition) // * remove Godzilla from the current position
 
   const x = godzillaPosition % width
   const y = Math.floor(godzillaPosition / width)
 
+  // const wallCheck = cells.filter(cell =>{
+  //   if (cell.classList.contains('wall')) {
+  //     return true
+  //   } return false
+  // })
+
   switch (event.keyCode) { // * calculate the next position and update it
     case 39:
-      if (x < width - 1) godzillaPosition++
+      if (x < width - 1 && wallCheck(godzillaPosition + 1)) {
+        godzillaPosition++
+      }
       break
     case 37:
-      if (x > 0) godzillaPosition--
+      if (x > 0 && wallCheck(godzillaPosition - 1)) {
+        godzillaPosition--
+      }
       break
     case 38:
-      if (y > 0) godzillaPosition -= width
+      if (y > 0 && wallCheck(godzillaPosition - width)) {
+        godzillaPosition -= width
+      }
       break
     case 40:
-      if (y < width - 1) godzillaPosition += width
+      if (y < width - 1 && wallCheck(godzillaPosition + width)) {
+        godzillaPosition += width
+      }
       break
     default:
       console.log('invalid key do nothing')
   }
-
-  addGodzilla(godzillaPosition) // * add pikachu back at the new position
+  addGodzilla(godzillaPosition) // * add Godzilla back at the new position
 }
 
 

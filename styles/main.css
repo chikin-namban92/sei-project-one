@@ -21,7 +21,6 @@ header h3 {
   display: flex;
   justify-content: center;
   align-items: center; 
-  margin-top: -70px;
 }
 
 .grid {
@@ -47,4 +46,10 @@ header h3 {
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
+}
+
+.grid div.wall {
+  background-color: slategrey;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
