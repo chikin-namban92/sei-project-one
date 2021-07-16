@@ -10,6 +10,7 @@ const cellCount = width * width
 
 // * Game Variable
 let godzillaPosition = 0
+let score = 0
 
 // * Functions
 function addGodzilla(position) {
@@ -33,6 +34,9 @@ function createGrid(startingPosition) {
   cells[17].classList.add('wall')
   cells[18].classList.add('wall')
   cells[28].classList.add('wall')
+  cells[3].classList.add('item')
+  cells[4].classList.add('item')
+  cells[5].classList.add('item')
   addGodzilla(startingPosition)
 }
 
@@ -40,17 +44,23 @@ function wallCheck(position) {
   return !cells[position].classList.contains('wall')
 }
 
+function itemCheck(position) {
+  return cells[position].classList.contains('item')
+}
+
+function itemPickUp(position) {
+  if (itemCheck(godzillaPosition)) {
+    cells[position].classList.remove('item')
+    score += 100
+    console.log(score)
+  }
+}
+
 function handleKeyUp(event) {
   removeGodzilla(godzillaPosition) // * remove Godzilla from the current position
 
   const x = godzillaPosition % width
   const y = Math.floor(godzillaPosition / width)
-
-  // const wallCheck = cells.filter(cell =>{
-  //   if (cell.classList.contains('wall')) {
-  //     return true
-  //   } return false
-  // })
 
   switch (event.keyCode) { // * calculate the next position and update it
     case 39:
@@ -77,6 +87,7 @@ function handleKeyUp(event) {
       console.log('invalid key do nothing')
   }
   addGodzilla(godzillaPosition) // * add Godzilla back at the new position
+  itemPickUp(godzillaPosition)
 }
 
 

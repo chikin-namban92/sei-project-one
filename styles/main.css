@@ -41,6 +41,12 @@ header h3 {
   width: 10%;
 }
 
+.grid div.item {
+  background-color: tomato;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .grid div.godzilla {
   background-image: url('../assets/godzilla_neutral_left.png');
   background-repeat: no-repeat;
