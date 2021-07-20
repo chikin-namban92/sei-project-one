@@ -54,6 +54,13 @@ header h3 {
   cursor: pointer;
 }
 
+.grid div.enemyOne {
+  background-color: teal;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
 .grid div.wall {
   background-color: slategrey;
   background-repeat: no-repeat;
