@@ -41,7 +41,7 @@ header h3 {
   width: 10%;
 }
 
-.grid div.item {
+.grid div.food {
   background-color: tomato;
   background-repeat: no-repeat;
   background-size: contain;
