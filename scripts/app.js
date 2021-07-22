@@ -19,9 +19,11 @@ const cellCount = width * width
 let godzillaPosition = 11
 let score = 0
 let enemyOnePosition = 88
+let enemyTwoPosition = 81
 let playerLives = 2
 let gameSpeed = 500
 let remainingFood = 51
+let levelsCompleted = 0
 
 // * Functions
 function gameStart() {
@@ -47,6 +49,14 @@ function addEnemyOne(position) {
 
 function removeEnemyOne(position) {
   cells[position].classList.remove('enemyOne')
+}
+
+function addEnemyTwo(position) {
+  cells[position].classList.add('enemyTwo')
+}
+
+function removeEnemyTwo(position) {
+  cells[position].classList.remove('enemyTwo')
 }
 
 function createGrid(startingPosition) {
@@ -142,6 +152,7 @@ function createGrid(startingPosition) {
 
   // Food divs
   foodSpawn()
+
   addGodzilla(startingPosition)
   addEnemyOne(enemyOnePosition)
 }
@@ -286,28 +297,69 @@ function enemyOneMovement() {
   }, gameSpeed)
 }
 
+function enemyTwoMovement() {
+
+  let enemyDirection = 0
+  const x = enemyTwoPosition % width
+  const y = Math.floor(enemyTwoPosition / width)
+
+  enemyDirection = Math.ceil(Math.random() * 4)
+
+  setInterval(() => {
+    if (x < width - 1 && wallCheck(enemyTwoPosition + 1) && enemyDirection === 1) {
+      removeEnemyTwo(enemyTwoPosition)
+      enemyTwoPosition++
+      addEnemyTwo(enemyTwoPosition)
+    } else if (x > 0 && wallCheck(enemyTwoPosition - 1) && enemyDirection === 2) {
+      removeEnemyTwo(enemyTwoPosition)
+      enemyTwoPosition--
+      addEnemyTwo(enemyTwoPosition)
+    } else if (y > 0 && wallCheck(enemyTwoPosition - width) && enemyDirection === 3) {
+      removeEnemyTwo(enemyTwoPosition)
+      enemyTwoPosition -= width
+      addEnemyTwo(enemyTwoPosition)
+    } else if (y < width - 1 && wallCheck(enemyTwoPosition + width) && enemyDirection === 4) {
+      removeEnemyTwo(enemyTwoPosition)
+      enemyTwoPosition += width
+      addEnemyTwo(enemyTwoPosition)
+    } else {
+      enemyDirection = Math.ceil(Math.random() * 4)
+      wallCheck(enemyTwoPosition)
+    }
+  }, gameSpeed)
+}
+
 function wallCheck(position) {
   return !cells[position].classList.contains('wall')
 }
 
 function foodCheck(position) {
-  return cells[position].classList.contains('food')
+  if (cells[position].classList.contains('food')) {
+    return cells[position].classList.contains('food')
+  } else if (cells[position].classList.contains('food-two')) {
+    return cells[position].classList.contains('food-two')
+  }
 }
 
 function foodPickUp(position) {
   if (foodCheck(godzillaPosition)) {
     cells[position].classList.remove('food')
+    cells[position].classList.remove('food-two')
     score += 100
     scoreCounter.textContent = score
     console.log(score)
     remainingFood--
     console.log(remainingFood)
-  } 
-  gameComplete()
+  }
+  startLevelTwo()
 }
 
 function enemyCollisionCheck(position) {
-  return cells[position].classList.contains('enemyOne')
+  if (cells[position].classList.contains('enemyOne')) {
+    return cells[position].classList.contains('enemyOne')
+  } else if (cells[position].classList.contains('enemyTwo')) {
+    return cells[position].classList.contains('enemyTwo')
+  }
 }
 
 function removePlayerLife() {
@@ -325,19 +377,12 @@ function removePlayerLife() {
   } return
 }
 
-// function playerDied() {
-//   if (playerLives === 0) {
-//     alert `Godzilla got eaten! You scored ${score} points`
+// function gameComplete() {
+//   if (remainingFood === 0) {
+//     alert `Godzilla is full. You win!`
 //     location.reload()
-//   } 
+//   }
 // }
-
-function gameComplete() {
-  if (remainingFood === 0) {
-    alert `Godzilla is full. You win!`
-    location.reload()
-  }
-}
 
 function handleKeyUp(event) {
   removeGodzilla(godzillaPosition) // * remove Godzilla from the current position
@@ -385,9 +430,28 @@ function audioMute(event) {
   }
 }
 
+function startLevelTwo() {
+  if (remainingFood === 0) {
+    levelsCompleted++
+    alert `Godzilla ate all the food, get ready for dessert!`
+    levelTwoFoodSpawn()
+    gameSpeed = 200
+    remainingFood = 51
+    removeGodzilla(godzillaPosition)
+    godzillaPosition = 11
+    addGodzilla(godzillaPosition)
+    removeEnemyOne(enemyOnePosition)
+    enemyOnePosition = 88
+    addEnemyOne(enemyOnePosition)
+    addEnemyTwo(enemyTwoPosition)
+    enemyTwoMovement()
+  } else if (levelsCompleted === 2) {
+    alert `Godzilla is full up. You win!`
+    location.reload()
+  }
+}
+
 // * Events
-// createGrid(godzillaPosition)
-// enemyOneMovement()
 gridWrapper.style.display = 'none'
 
 document.getElementById('startButton').addEventListener('click', gameStart)
