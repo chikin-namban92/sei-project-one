@@ -24,6 +24,7 @@ let playerLives = 2
 let gameSpeed = 500
 let remainingFood = 51
 let levelsCompleted = 0
+let levelTwoExecuted = false
 
 // * Functions
 function gameStart() {
@@ -431,8 +432,9 @@ function audioMute(event) {
 }
 
 function startLevelTwo() {
-  if (remainingFood === 0) {
+  if (remainingFood === 0 && !levelTwoExecuted) {
     levelsCompleted++
+    levelTwoExecuted = true
     alert `Godzilla ate all the food, get ready for dessert!`
     levelTwoFoodSpawn()
     gameSpeed = 200
@@ -445,7 +447,7 @@ function startLevelTwo() {
     addEnemyOne(enemyOnePosition)
     addEnemyTwo(enemyTwoPosition)
     enemyTwoMovement()
-  } else if (levelsCompleted === 2) {
+  } else if (remainingFood === 0 && levelTwoExecuted) {
     alert `Godzilla is full up. You win!`
     location.reload()
   }
