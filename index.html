@@ -14,10 +14,26 @@
 <header>
   <h1>Godzilla is Hungry</h1>
   <h3>ゴジラ君はペコペコ</h3>
+  <div class='game-info'>
+    <div class='score'>
+      <p>Score</p>
+      <p class='scoreCounter'></p>
+    </div>
+    <div class='lives'>
+      <p>Lives</p>
+      <p class='livesCounter'></p>
+    </div>
+  </div>
 </header>
 <body>
+  <div class='start-menu'>
+    <p>Godzilla wants some tasty radiation but the other monsters are out to get him.</p>
+    <p>Avoid them using WASD and fill his belly.</p>
+    <button class='button' id='startButton'>Start Game</button>
+  </div>
   <div class='grid-wrapper'>
     <div class='grid'></div>
   </div>
+  <audio id='bgm' loop></audio>
 </body>
 </html>

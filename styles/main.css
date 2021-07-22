@@ -16,6 +16,51 @@ header h3 {
   padding-bottom: 0px;
 }
 
+.game-info {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px 0px -120px 0px;
+  font-family: 'DotGothic16', sans-serif;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+}
+
+.scoreCounter {
+  margin-top: 0px;
+}
+
+.livesCounter {
+  margin-top: 0px;
+}
+
+.lives {
+  display: flex;
+  flex-direction: column;
+}
+
+.start-menu {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  margin-top: 80px;
+  font-family: 'DotGothic16', sans-serif;
+}
+
+.start-menu p {
+  margin: 0px;
+}
+
+.button {
+  margin-top: 10px;
+  padding: 5px 3px;
+  font-family: 'DotGothic16', sans-serif;
+}
+
 .grid-wrapper {
   height: 100vh;
   display: flex;
@@ -42,7 +87,13 @@ header h3 {
 }
 
 .grid div.food {
-  background-color: tomato;
+  background-image: url('../assets/food1.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.grid div.food-two {
+  background-image: url('../assets/food2.png');
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -55,7 +106,7 @@ header h3 {
 }
 
 .grid div.enemyOne {
-  background-color: teal;
+  background-image: url('../assets/megalon_neutral_left.png');
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;

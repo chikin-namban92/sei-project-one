@@ -1,5 +1,12 @@
 // * DOM Elements
+const gridWrapper = document.querySelector('.grid-wrapper')
 const grid = document.querySelector('.grid')
+const startMenu = document.querySelector('.start-menu')
+const scoreCounter = document.querySelector('.scoreCounter')
+scoreCounter.textContent = 0
+const livesCounter = document.querySelector('.livesCounter')
+const audio = document.getElementById('bgm')
+livesCounter.textContent = 2
 const cells = []
 
 
@@ -14,14 +21,24 @@ let score = 0
 let enemyOnePosition = 88
 let playerLives = 2
 let gameSpeed = 500
+let remainingFood = 51
 
 // * Functions
+function gameStart() {
+  gridWrapper.style.display = 'flex'
+  startMenu.style.display = 'none'
+  createGrid(godzillaPosition)
+  enemyOneMovement()
+  audio.src = './sounds/8bit godzilla.wav'
+  audio.play()
+}
+
 function addGodzilla(position) {
   cells[position].classList.add('godzilla')
 }
 
 function removeGodzilla(position) {
-  cells[position].classList.remove('godzilla')
+  cells[position].classList.remove('godzilla')  
 }
 
 function addEnemyOne(position) {
@@ -183,6 +200,60 @@ function foodSpawn() {
   cells[88].classList.add('food')
 }
 
+function levelTwoFoodSpawn() {
+  cells[12].classList.add('food-two')
+  cells[13].classList.add('food-two')
+  cells[16].classList.add('food-two')
+  cells[17].classList.add('food-two')
+  cells[18].classList.add('food-two')
+  cells[21].classList.add('food-two')
+  cells[23].classList.add('food-two')
+  cells[24].classList.add('food-two')
+  cells[25].classList.add('food-two')
+  cells[26].classList.add('food-two')
+  cells[28].classList.add('food-two')
+  cells[31].classList.add('food-two')
+  cells[33].classList.add('food-two')
+  cells[34].classList.add('food-two')
+  cells[35].classList.add('food-two')
+  cells[36].classList.add('food-two')
+  cells[38].classList.add('food-two')
+  cells[41].classList.add('food-two')
+  cells[42].classList.add('food-two')
+  cells[43].classList.add('food-two')
+  cells[44].classList.add('food-two')
+  cells[45].classList.add('food-two')
+  cells[46].classList.add('food-two')
+  cells[47].classList.add('food-two')
+  cells[48].classList.add('food-two')
+  cells[51].classList.add('food-two')
+  cells[52].classList.add('food-two')
+  cells[54].classList.add('food-two')
+  cells[55].classList.add('food-two')
+  cells[57].classList.add('food-two')
+  cells[58].classList.add('food-two')
+  cells[62].classList.add('food-two')
+  cells[63].classList.add('food-two')
+  cells[64].classList.add('food-two')
+  cells[65].classList.add('food-two')
+  cells[66].classList.add('food-two')
+  cells[67].classList.add('food-two')
+  cells[71].classList.add('food-two')
+  cells[72].classList.add('food-two')
+  cells[73].classList.add('food-two')
+  cells[74].classList.add('food-two')
+  cells[75].classList.add('food-two')
+  cells[76].classList.add('food-two')
+  cells[77].classList.add('food-two')
+  cells[78].classList.add('food-two')
+  cells[81].classList.add('food-two')
+  cells[82].classList.add('food-two')
+  cells[83].classList.add('food-two')
+  cells[86].classList.add('food-two')
+  cells[87].classList.add('food-two')
+  cells[88].classList.add('food-two')
+}
+
 function enemyOneMovement() {
 
   let enemyDirection = 0
@@ -215,22 +286,6 @@ function enemyOneMovement() {
   }, gameSpeed)
 }
 
-// function enemyBoundaryCheck(position) {
-//   const x = position % width
-//   const y = Math.floor(position / width)
-//   if (x < 1) {
-//     return cells[position].classList.add('boundary')
-//   } else if (x > 0) {
-//     return cells[position].classList.add('boundary')
-//   } else if (y > 0) {
-//     return cells[position].classList.add('boundary')
-//   } else if (y < width - 1) {
-//     return cells[position].classList.add('boundary')
-//   }
-// }
-
-
-
 function wallCheck(position) {
   return !cells[position].classList.contains('wall')
 }
@@ -243,9 +298,12 @@ function foodPickUp(position) {
   if (foodCheck(godzillaPosition)) {
     cells[position].classList.remove('food')
     score += 100
+    scoreCounter.textContent = score
     console.log(score)
-    return score
+    remainingFood--
+    console.log(remainingFood)
   } 
+  gameComplete()
 }
 
 function enemyCollisionCheck(position) {
@@ -255,14 +313,30 @@ function enemyCollisionCheck(position) {
 function removePlayerLife() {
   if (enemyCollisionCheck(godzillaPosition)) {
     playerLives -= 1
+    livesCounter.textContent = playerLives
     removeGodzilla(godzillaPosition)
     godzillaPosition = 11
     addGodzilla(godzillaPosition)
-    // window.alert `Godzilla died. You scored ${score} points!`
+    livesCounter.textContent = playerLives
     console.log(playerLives)
   } else if (playerLives === 0) {
-    alert `Godzilla died. You scored ${score} points!`
+    alert `Godzilla got eaten! You scored ${score} points`
+    location.reload()
   } return
+}
+
+// function playerDied() {
+//   if (playerLives === 0) {
+//     alert `Godzilla got eaten! You scored ${score} points`
+//     location.reload()
+//   } 
+// }
+
+function gameComplete() {
+  if (remainingFood === 0) {
+    alert `Godzilla is full. You win!`
+    location.reload()
+  }
 }
 
 function handleKeyUp(event) {
@@ -272,22 +346,22 @@ function handleKeyUp(event) {
   const y = Math.floor(godzillaPosition / width)
 
   switch (event.keyCode) { // * calculate the next position and update it
-    case 39:
+    case 68:
       if (x < width - 1 && wallCheck(godzillaPosition + 1)) {
         godzillaPosition++
       }
       break
-    case 37:
+    case 65:
       if (x > 0 && wallCheck(godzillaPosition - 1)) {
         godzillaPosition--
       }
       break
-    case 38:
+    case 87:
       if (y > 0 && wallCheck(godzillaPosition - width)) {
         godzillaPosition -= width
       }
       break
-    case 40:
+    case 83:
       if (y < width - 1 && wallCheck(godzillaPosition + width)) {
         godzillaPosition += width
       }
@@ -300,9 +374,22 @@ function handleKeyUp(event) {
   removePlayerLife()
 }
 
+function audioMute(event) {
+  switch (event.keyCode) {
+    case 77:
+      if (audio.play()) {
+        audio.pause()
+      } else {
+        audio.play()
+      }
+  }
+}
 
 // * Events
-createGrid(godzillaPosition)
-enemyOneMovement()
+// createGrid(godzillaPosition)
+// enemyOneMovement()
+gridWrapper.style.display = 'none'
 
+document.getElementById('startButton').addEventListener('click', gameStart)
 document.addEventListener('keyup', handleKeyUp)
+document.addEventListener('keydown', audioMute)
