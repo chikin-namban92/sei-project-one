@@ -23,8 +23,8 @@ let enemyTwoPosition = 81
 let playerLives = 2
 let gameSpeed = 500
 let remainingFood = 51
-let levelsCompleted = 0
 let levelTwoExecuted = false
+let audioOn = false
 
 // * Functions
 function gameStart() {
@@ -34,6 +34,7 @@ function gameStart() {
   enemyOneMovement()
   audio.src = './sounds/8bit godzilla.wav'
   audio.play()
+  audioOn = true
 }
 
 function addGodzilla(position) {
@@ -63,38 +64,10 @@ function removeEnemyTwo(position) {
 function createGrid(startingPosition) {
   for (let i = 0; i < cellCount; i++) {
     const cell = document.createElement('div')
-    cell.textContent = i
+    // cell.textContent = i
     grid.appendChild(cell)
     cells.push(cell)
   }
-  // cells[11].classList.add('wall')
-  // cells[12].classList.add('wall')
-  // cells[21].classList.add('wall')
-  // cells[17].classList.add('wall')
-  // cells[18].classList.add('wall')
-  // cells[28].classList.add('wall')
-  // cells[4].classList.add('wall')
-  // cells[5].classList.add('wall')
-  // cells[24].classList.add('wall')
-  // cells[34].classList.add('wall')
-  // cells[25].classList.add('wall')
-  // cells[35].classList.add('wall')
-  // cells[78].classList.add('wall')
-  // cells[87].classList.add('wall')
-  // cells[88].classList.add('wall')
-  // cells[71].classList.add('wall')
-  // cells[81].classList.add('wall')
-  // cells[82].classList.add('wall')
-  // cells[94].classList.add('wall')
-  // cells[95].classList.add('wall')
-  // cells[64].classList.add('wall')
-  // cells[74].classList.add('wall')
-  // cells[65].classList.add('wall')
-  // cells[75].classList.add('wall')
-  // cells[50].classList.add('wall')
-  // cells[51].classList.add('wall')
-  // cells[58].classList.add('wall')
-  // cells[59].classList.add('wall')
 
   // Boundary walls
   cells[0].classList.add('wall')
@@ -378,20 +351,13 @@ function removePlayerLife() {
   } return
 }
 
-// function gameComplete() {
-//   if (remainingFood === 0) {
-//     alert `Godzilla is full. You win!`
-//     location.reload()
-//   }
-// }
-
 function handleKeyUp(event) {
-  removeGodzilla(godzillaPosition) // * remove Godzilla from the current position
+  removeGodzilla(godzillaPosition) // 
 
   const x = godzillaPosition % width
   const y = Math.floor(godzillaPosition / width)
 
-  switch (event.keyCode) { // * calculate the next position and update it
+  switch (event.keyCode) { 
     case 68:
       if (x < width - 1 && wallCheck(godzillaPosition + 1)) {
         godzillaPosition++
@@ -415,7 +381,7 @@ function handleKeyUp(event) {
     default:
       // console.log('invalid key do nothing')
   }
-  addGodzilla(godzillaPosition) // * add Godzilla back at the new position
+  addGodzilla(godzillaPosition) 
   foodPickUp(godzillaPosition)
   removePlayerLife()
 }
@@ -423,17 +389,19 @@ function handleKeyUp(event) {
 function audioMute(event) {
   switch (event.keyCode) {
     case 77:
-      if (audio.play()) {
-        audio.pause()
-      } else {
+      if (audioOn === true) {
+        audio.src = ''
+        audioOn = false
+      } else if (audioOn === false) {
+        audio.src = './sounds/8bit godzilla.wav'
         audio.play()
+        audioOn = true
       }
   }
 }
 
 function startLevelTwo() {
   if (remainingFood === 0 && !levelTwoExecuted) {
-    levelsCompleted++
     levelTwoExecuted = true
     alert `Godzilla ate all the food, get ready for dessert!`
     levelTwoFoodSpawn()
