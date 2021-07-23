@@ -346,7 +346,7 @@ function removePlayerLife() {
     livesCounter.textContent = playerLives
     console.log(playerLives)
   } else if (playerLives === 0) {
-    alert `Godzilla got eaten! You scored ${score} points`
+    alert `Godzilla got eaten! Game Over.`
     location.reload()
   } return
 }
